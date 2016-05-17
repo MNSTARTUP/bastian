@@ -3,6 +3,9 @@
 // Get the modules we need
 var restify = require("restify");
 var request = require("request");
+var hello = require("./hello");
+var webhookGet = require("./webhook_get");
+var webhookPost = require("./webhook_post");
 
 // YAAY! SERVER!!
 var server = restify.createServer();
@@ -12,28 +15,15 @@ server.use(restify.queryParser());
 server.use(restify.bodyParser());
 
 // This is a test endpoint to see if all is going as planned
-server.get("/hello/:name",function(req,res,next){
-	var text = "Hi, " + (req.params.name || "there!");
-	var message = {
-		"text" : text
-	}
-	res.send(message);
-	return next();
-});
+server.get("/hello/:name",hello);
 
 // This is the endpoint which will be called
 // When Facebook is trying to verify our bot
-server.get("/webhook/",function(req,res,next){
-	var token = req.query.hub.verify_token;
-	if( token === process.env.VALIDATION_TOKEN ){
-		res.write( req.query.hub.challenge );
-		res.end();
-	}else{
-		res.send("Error, wrong validation token");
-	}
-	return next();
+server.get("/webhook/",webhookGet);
 
-});
+// This is the endpoint which will be called
+// when Facebook is sending us messages from the page
+server.post("/webhook/",webhookPost);
 
 // Start the server
 // The Heroku environment will be assigning a port number once we deploy
