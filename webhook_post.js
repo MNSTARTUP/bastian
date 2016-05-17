@@ -1,29 +1,37 @@
 var fb = require("./fb");
-module.exports = function(req,res,next){
+var nlp = require("./nlp")
+var Q = require("q");
+
+module.exports = function(req, res, next) {
     console.log("===Received a message from FB");
-    // Tell FB that we have received the request by ending it.
-    // Without this, the request will timeout and FB will resend it
-    // causing you to accidentally spam the user.
     res.end();
-    // Get the entries
     var entries = req.body.entry;
-    // Let's go over all entries:
-    entries.forEach(function(entry){
+    var promises = [];
+    entries.forEach(function(entry) {
         var messages = entry.messaging;
-        // for every message
-        messages.forEach(function(message){
-            var senderID = message.sender.id;
-            // check if it is a text message
+        messages.forEach(function(message) {
+            var senderId = message.sender.id;
             var isTextMessage = message.message.text ? true : false;
-            if( isTextMessage ){
-                // echo the text for every message
+            if (isTextMessage) {
                 var text = message.message.text;
-                fb.reply( fb.textMessage(text),senderID );
-            }else{
-                // else, just send a thumb
-                fb.reply( fb.textMessage("(y)"), senderID);
+                console.log("===user sent text");
+                // PROMISES
+                promises.push(nlp(text, senderId));
+            } else {
+                fb.reply(fb.textMessage("(y)"), senderId);
             }
         });
+    });
+    Q.all(promises).then(function(responses) {
+        // response is the JSON from API.ai
+        responses.forEach(function(response) {
+            console.log("===received result from API.ai",response);
+            var userSaid = response.result.resolvedQuery
+            console.log("===user sent",userSaid);
+            fb.reply( fb.textMessage(userSaid),response.sessionId );
+        });
+    }, function(error) {
+        console.log("[webhook_post.js]", error);
     });
     return next();
 }
