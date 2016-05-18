@@ -37,27 +37,50 @@ module.exports = function(req, res, next) {
 }
 
 function afterNlp(data){
-    var senderId = data.sessionId;
     var source = data.result.source;
+    var action = data.result.action;
     if(source == "agent"){
-        // TODO: add later
-        var message = "Nachricht empfangen, checks aber noch ned ganz";
-        fb.reply(fb.textMessage(message),senderId);
-        
+        switch( action ){
+            case "agent.what.were.you.doing":
+                sayWhat(data);
+                break;
+            default:
+                dontKnow(data);
+        }
     }else if(source == "domains"){
         var simplified = data.result.parameters.simplified;
         if(simplified == "hello"){
-            var message = "Well hello there!";
-            fb.reply(fb.textMessage(message),senderId);
+            hello(data);
         }else if(simplified == "how are you"){
-            var message = "I'm doing well. Thank you for asking";
-            fb.reply(fb.textMessage(message),senderId);
+            howAreYou(data);
         }else{
-            var message = "What are you talking about?";
-            fb.reply(fb.textMessage(message),senderId);
+            dontKnow(data);
         }
     }else{
-        var message = "What are you talking about?";
-        fb.reply(fb.textMessage(message),senderId);
+        dontKnow(data);
     }
+}
+
+function hello(data){
+    var senderId = data.sessionId;
+    var message = "Well hello there!";
+    fb.reply(fb.textMessage(message),senderId);
+}
+
+function sayWhat(data){
+    var senderId = data.sessionId;
+    var message = "Ich bin am lernen";
+    fb.reply(fb.textMessage(message),senderId);
+}
+
+function howAreYou(data){
+    var senderId = data.sessionId;
+    var message = "I'm doing well. Thank you for asking";
+    fb.reply(fb.textMessage(message),senderId);
+}
+
+function dontKnow(data){
+    var senderId = data.sessionId;
+    var message = "What are you talking about?";
+    fb.reply(fb.textMessage(message),senderId);
 }
