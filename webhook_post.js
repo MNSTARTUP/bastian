@@ -43,7 +43,7 @@ function afterNlp(data){
         // TODO: add later
     }else if(source == "domains"){
         var simplified = data.result.parameters.simplified;
-        if(simplified == "hallo"){
+        if(simplified == "hello"){
             var message = "Well hello there!";
             fb.reply(fb.textMessage(message),senderId);
         }else if(simplified == "how are you"){
