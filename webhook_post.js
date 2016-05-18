@@ -41,6 +41,9 @@ function afterNlp(data){
     var source = data.result.source;
     if(source == "agent"){
         // TODO: add later
+        var message = "Nachricht empfangen, checks aber noch ned ganz";
+        fb.reply(fb.textMessage(message),senderId);
+        
     }else if(source == "domains"){
         var simplified = data.result.parameters.simplified;
         if(simplified == "hello"){
