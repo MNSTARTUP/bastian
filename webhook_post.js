@@ -42,16 +42,16 @@ function afterNlp(data){
     if(source == "agent"){
         switch( action ){
             case "agent.wo":
-                sayWhat(data);
+                agentwo(data);
                 break;
             default:
                 dontKnow(data);
         }
     }else if(source == "domains"){
         var simplified = data.result.parameters.simplified;
-        if(simplified == "hello"){
+        if(simplified == "hallo"){
             hello(data);
-        }else if(simplified == "how are you"){
+        }else if(simplified == "wie geht es dir?"){
             howAreYou(data);
         }else{
             dontKnow(data);
@@ -63,11 +63,11 @@ function afterNlp(data){
 
 function hello(data){
     var senderId = data.sessionId;
-    var message = "Well hello there!";
+    var message = "Serwas";
     fb.reply(fb.textMessage(message),senderId);
 }
 
-function sayWhat(data){
+function agentwo(data){
     var senderId = data.sessionId;
     var message = "In der Augasse";
     fb.reply(fb.textMessage(message),senderId);

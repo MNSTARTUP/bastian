@@ -8,7 +8,7 @@ function nlp(query,sessionId){
 		"url" : "https://api.api.ai/v1/query?v=20150910",
 		"json" : {
 			"query" : query,
-			"lang" : "de",
+			"lang" : "DE",
 			"sessionId" : sessionId
 		},
 		"headers" : {
