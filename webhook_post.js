@@ -46,17 +46,17 @@ function afterNlp(data){
                 break;
             default:
                 dontKnow(data);
-        }
-    }else if(source == "domains"){
-        var simplified = data.result.parameters.simplified;
-        if(simplified == "hallo"){
-            hello(data);
-        }else if(simplified == "wie geht es dir?"){
-            howAreYou(data);
-        }else{
-            dontKnow(data);
-        }
-    }else{
+        				}
+   		// }else if(source == "domains"){
+    	//    var simplified = data.result.parameters.simplified;
+    	//    if(simplified == "hallo"){
+    	//        hello(data);
+     	//   }else if(simplified == "wie geht es dir?"){
+    	//        howAreYou(data);
+    	//    }else{
+    	//        dontKnow(data);
+    }
+    else{
         dontKnow(data);
     }
 }
