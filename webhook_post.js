@@ -41,7 +41,7 @@ function afterNlp(data){
     var action = data.result.action;
     if(source == "agent"){
         switch( action ){
-            case "agent.what.were.you.doing":
+            case "agent.wo":
                 sayWhat(data);
                 break;
             default:
@@ -69,7 +69,7 @@ function hello(data){
 
 function sayWhat(data){
     var senderId = data.sessionId;
-    var message = "Ich bin am lernen";
+    var message = "In der Augasse";
     fb.reply(fb.textMessage(message),senderId);
 }
 
@@ -81,6 +81,6 @@ function howAreYou(data){
 
 function dontKnow(data){
     var senderId = data.sessionId;
-    var message = "What are you talking about?";
+    var message = "stupid human..";
     fb.reply(fb.textMessage(message),senderId);
 }
