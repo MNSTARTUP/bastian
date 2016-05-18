@@ -44,9 +44,12 @@ function afterNlp(data){
             case "agent.wo":
                 agentwo(data);
                 break;
+            case "agent.wieviel.oehbeitrag":
+            	agentwievieloehbeitrag(data);
+            	break;
             default:
                 dontKnow(data);
-        				}
+        }
    		// }else if(source == "domains"){
     	//    var simplified = data.result.parameters.simplified;
     	//    if(simplified == "hallo"){
@@ -69,7 +72,13 @@ function hello(data){
 
 function agentwo(data){
     var senderId = data.sessionId;
-    var message = "In der Augasse";
+    var message = "In der Augasse! Einfach beim Haupteingang rein, gleich rechts unter der Stiege durch bis du anstehst. ;)";
+    fb.reply(fb.textMessage(message),senderId);
+}
+
+function agentwievieloehbeitrag(data){
+    var senderId = data.sessionId;
+    var message = "Der is grade bei 18,70€.";
     fb.reply(fb.textMessage(message),senderId);
 }
 
@@ -81,6 +90,6 @@ function howAreYou(data){
 
 function dontKnow(data){
     var senderId = data.sessionId;
-    var message = "stupid human..";
+    var message = "da bin ich überfragt..";
     fb.reply(fb.textMessage(message),senderId);
 }
