@@ -26,12 +26,35 @@ module.exports = function(req, res, next) {
         // response is the JSON from API.ai
         responses.forEach(function(response) {
             console.log("===received result from API.ai",response);
-            var userSaid = response.result.resolvedQuery
+            var userSaid = response.result.resolvedQuery;
             console.log("===user sent",userSaid);
-            fb.reply( fb.textMessage(userSaid),response.sessionId );
+            afterNlp(response);
         });
     }, function(error) {
         console.log("[webhook_post.js]", error);
     });
     return next();
+}
+
+function afterNlp(data){
+    var senderId = data.sessionId;
+    var source = data.result.source;
+    if(source == "agent"){
+        // TODO: add later
+    }else if(source == "domains"){
+        var simplified = data.result.parameters.simplified;
+        if(simplified == "hallo"){
+            var message = "Well hello there!";
+            fb.reply(fb.textMessage(message),senderId);
+        }else if(simplified == "how are you"){
+            var message = "I'm doing well. Thank you for asking";
+            fb.reply(fb.textMessage(message),senderId);
+        }else{
+            var message = "What are you talking about?";
+            fb.reply(fb.textMessage(message),senderId);
+        }
+    }else{
+        var message = "What are you talking about?";
+        fb.reply(fb.textMessage(message),senderId);
+    }
 }
