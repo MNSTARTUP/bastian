@@ -76,21 +76,19 @@ function afterNlp(data){
     }
 }
 
+//Greetings---------------------------------------
+
 function hello(data){
     var senderId = data.sessionId;
     var message = "Serwas";
     fb.reply(fb.textMessage(message),senderId);
 }
 
+//Wo Fragen---------------------------------------
+
 function agentwo(data){
     var senderId = data.sessionId;
     var message = "In der Augasse! Einfach beim Haupteingang rein, gleich rechts unter der Stiege durch bis du anstehst. ;)";
-    fb.reply(fb.textMessage(message),senderId);
-}
-
-function agentwievieloehbeitrag(data){
-    var senderId = data.sessionId;
-    var message = "Der is grade bei 18,70€.";
     fb.reply(fb.textMessage(message),senderId);
 }
 
@@ -107,8 +105,19 @@ function wosekretariat(data){
     fb.reply(fb.textMessage(message),senderId);
 }
 
+
+//Wieviel Fragen----------------------------------
+
+function agentwievieloehbeitrag(data){
+    var senderId = data.sessionId;
+    var message = "Der is grade bei 18,70€.";
+    fb.reply(fb.textMessage(message),senderId);
+}
+
+//Standardantwort---------------------------------
+
 function dontknow(data){
     var senderId = data.sessionId;
-    var message = "da bin ich überfragt..";
+    var message = "so is es :)";
     fb.reply(fb.textMessage(message),senderId);
 }
