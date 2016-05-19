@@ -39,16 +39,28 @@ module.exports = function(req, res, next) {
 function afterNlp(data){
     var source = data.result.source;
     var action = data.result.action;
+    var ort = data.result.parameters.ort;
+
     if(source == "agent"){
         switch( action ){
             case "agent.wo":
-                agentwo(data);
+                //agentwo(data);
+                switch( ort ){
+                	case "öh sekretariat":
+                	wosekretariat(data);
+                	break;
+                	case "gregor-mendel-haus":
+                	wogregormendelhaus(data);
+                	break;
+                default:
+                	dontknow(data);
+                }
                 break;
             case "agent.wieviel.oehbeitrag":
             	agentwievieloehbeitrag(data);
             	break;
             default:
-                dontKnow(data);
+                dontknow(data);
         }
    		// }else if(source == "domains"){
     	//    var simplified = data.result.parameters.simplified;
@@ -60,7 +72,7 @@ function afterNlp(data){
     	//        dontKnow(data);
     }
     else{
-        dontKnow(data);
+        dontknow(data);
     }
 }
 
@@ -82,13 +94,20 @@ function agentwievieloehbeitrag(data){
     fb.reply(fb.textMessage(message),senderId);
 }
 
-function howAreYou(data){
+function wogregormendelhaus(data){
     var senderId = data.sessionId;
-    var message = "I'm doing well. Thank you for asking";
+    var message = "Gregor-Mendel-Straße 33, 1180 Wien";
+    //sollte über normale google places ersetzt werden
     fb.reply(fb.textMessage(message),senderId);
 }
 
-function dontKnow(data){
+function wosekretariat(data){
+    var senderId = data.sessionId;
+    var message = "In der Augasse! Einfach beim Haupteingang rein, gleich rechts unter der Stiege durch bis du anstehst. ;)";
+    fb.reply(fb.textMessage(message),senderId);
+}
+
+function dontknow(data){
     var senderId = data.sessionId;
     var message = "da bin ich überfragt..";
     fb.reply(fb.textMessage(message),senderId);
