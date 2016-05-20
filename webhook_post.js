@@ -40,36 +40,18 @@ function afterNlp(data){
     var source = data.result.source;
     var action = data.result.action;
     var ort = data.result.parameters.ort;
+    var qa_data = [ 
+                    { q: 'frage1', a: 'antwort1' },
+                    { q: 'frage2', a: 'antwort2' },
+
+                ];
 
     if(source == "agent"){
-        switch( action ){
-            case "agent.wo":
-                //agentwo(data);
-                switch( ort ){
-                	case "öh sekretariat":
-                	wosekretariat(data);
-                	break;
-                	case "gregor-mendel-haus":
-                	wogregormendelhaus(data);
-                	break;
-                default:
-                	dontknow(data);
-                }
-                break;
-            case "agent.wieviel.oehbeitrag":
-            	agentwievieloehbeitrag(data);
-            	break;
-            default:
-                dontknow(data);
+        for (var i = 0; i < qa_data.length; i++) {
+           if(action == qa_data[i].q){
+            sendMessage(data, qa_data[i].a)    
+           }
         }
-   		// }else if(source == "domains"){
-    	//    var simplified = data.result.parameters.simplified;
-    	//    if(simplified == "hallo"){
-    	//        hello(data);
-     	//   }else if(simplified == "wie geht es dir?"){
-    	//        howAreYou(data);
-    	//    }else{
-    	//        dontKnow(data);
     }
     else{
         dontknow(data);
@@ -78,45 +60,37 @@ function afterNlp(data){
 
 //Greetings---------------------------------------
 
-function hello(data){
-    var senderId = data.sessionId;
-    var message = "Serwas";
-    fb.reply(fb.textMessage(message),senderId);
+function hello(data){    
+    sendMessage(data, "Serwas");
 }
 
 //Wo Fragen---------------------------------------
 
 function agentwo(data){
-    var senderId = data.sessionId;
-    var message = "In der Augasse! Einfach beim Haupteingang rein, gleich rechts unter der Stiege durch bis du anstehst. ;)";
-    fb.reply(fb.textMessage(message),senderId);
+    sendMessage(data, "In der Augasse! Einfach beim Haupteingang rein, gleich rechts unter der Stiege durch bis du anstehst. ;)");
 }
 
 function wogregormendelhaus(data){
-    var senderId = data.sessionId;
-    var message = "Gregor-Mendel-Straße 33, 1180 Wien";
-    //sollte über normale google places ersetzt werden
-    fb.reply(fb.textMessage(message),senderId);
+    sendMessage(data, "Gregor-Mendel-Straße 33, 1180 Wien");
 }
 
 function wosekretariat(data){
-    var senderId = data.sessionId;
-    var message = "In der Augasse! Einfach beim Haupteingang rein, gleich rechts unter der Stiege durch bis du anstehst. ;)";
-    fb.reply(fb.textMessage(message),senderId);
+    sendMessage(data, "In der Augasse! Einfach beim Haupteingang rein, gleich rechts unter der Stiege durch bis du anstehst. ;)");
 }
-
 
 //Wieviel Fragen----------------------------------
 
 function agentwievieloehbeitrag(data){
-    var senderId = data.sessionId;
-    var message = "Der is grade bei 18,70€.";
-    fb.reply(fb.textMessage(message),senderId);
+    sendMessage(data, "Der is grade bei 18,70€.");
 }
 
 //Standardantwort---------------------------------
 
 function dontknow(data){
+    sendMessage(data, "so is es :)");
+}
+
+function sendMessage(data,message){
     var senderId = data.sessionId;
     var message = "so is es :)";
     fb.reply(fb.textMessage(message),senderId);
